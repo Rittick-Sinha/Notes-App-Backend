@@ -12,14 +12,17 @@ interface AuthRequest extends Request {
 // ✅ Middleware to authenticate token
 const authenticate = (req: AuthRequest, res: Response, next: NextFunction) => {
   const token = req.header('Authorization')?.split(' ')[1];
-  if (!token) return res.status(401).json({ message: 'No token provided' });
+  if (!token) {
+    res.status(401).json({ message: 'No token provided' });
+    return;
+  }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { id: string };
     req.userId = decoded.id;
     next();
   } catch (err) {
-    return res.status(401).json({ message: 'Invalid token' });
+    res.status(401).json({ message: 'Invalid token' });
   }
 };
 
@@ -52,7 +55,10 @@ router.put('/:id', authenticate, async (req: AuthRequest, res: Response) => {
       req.body,
       { new: true }
     );
-    if (!note) return res.status(404).json({ message: 'Note not found' });
+    if (!note) {
+      res.status(404).json({ message: 'Note not found' });
+      return;
+    }
     res.status(200).json(note);
   } catch (err) {
     res.status(500).json({ message: 'Something went wrong' });
@@ -63,7 +69,10 @@ router.put('/:id', authenticate, async (req: AuthRequest, res: Response) => {
 router.delete('/:id', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const note = await Note.findOneAndDelete({ _id: req.params.id, user: req.userId });
-    if (!note) return res.status(404).json({ message: 'Note not found' });
+    if (!note) {
+      res.status(404).json({ message: 'Note not found' });
+      return;
+    }
     res.status(200).json({ message: 'Note deleted' });
   } catch (err) {
     res.status(500).json({ message: 'Something went wrong' });
