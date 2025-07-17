@@ -14,7 +14,7 @@ app.use(express.json());
 
 // Add CORS middleware
 const allowedOrigins = [
-  'https://your-frontend.vercel.app', // <-- replace with your actual Vercel frontend URL
+  'https://notes-app-frontend-chi-lovat.vercel.app/', // <-- replace with your actual Vercel frontend URL
   'http://localhost:8000',            // for local development
 ];
 
