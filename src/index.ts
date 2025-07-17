@@ -13,8 +13,15 @@ const app = express();
 app.use(express.json());
 
 // Add CORS middleware
-const allowedOrigins = ['https://notes-app-frontend-teal-six.vercel.app/'];
-app.use(cors({ origin: allowedOrigins, credentials: true }));
+const allowedOrigins = [
+  'https://your-frontend.vercel.app', // <-- replace with your actual Vercel frontend URL
+  'http://localhost:8000',            // for local development
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRouter);
