@@ -27,7 +27,7 @@ router.post('/login', async (req: Request, res: Response) => {
     }
 
     // Create token
-    const signOptions: SignOptions = { expiresIn: String(process.env.JWT_EXPIRES_IN || '1d') };
+    const signOptions: SignOptions = { expiresIn: (process.env.JWT_EXPIRES_IN as SignOptions['expiresIn']) || '1d' };
     const token = Jwt.sign(
       { id: user._id },
       process.env.JWT_SECRET as Secret,
@@ -71,7 +71,7 @@ router.post('/register', async (req: Request, res: Response) => {
     await user.save();
 
     // Generate JWT token
-    const signOptions: SignOptions = { expiresIn: String(process.env.JWT_EXPIRES_IN || '1d') };
+    const signOptions: SignOptions = { expiresIn: (process.env.JWT_EXPIRES_IN as SignOptions['expiresIn']) || '1d' };
     const token = Jwt.sign(
       { id: user._id },
       process.env.JWT_SECRET as Secret,
