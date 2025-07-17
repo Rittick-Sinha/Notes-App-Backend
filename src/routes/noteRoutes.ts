@@ -16,7 +16,6 @@ const authenticate = (req: AuthRequest, res: Response, next: NextFunction) => {
     res.status(401).json({ message: 'No token provided' });
     return;
   }
-
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { id: string };
     req.userId = decoded.id;
